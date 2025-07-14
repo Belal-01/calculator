@@ -12,7 +12,40 @@
     style="position: fixed; top: 0; left: 0 ; right:0; bottom:0; outline: none;">
 
     </canvas>
-    
+    <div id="timeDisplay" style="
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: white;
+  font-family: monospace;
+  font-size: 18px;
+  background: rgba(0,0,0,0.5);
+  padding: 5px 10px;
+  border-radius: 8px;
+  z-index: 999;
+">
+  Days: 0
+</div>
+
+
+
+<div id="hud" style="
+    position: fixed;
+    top: 50px;
+    left: 20px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 10px 15px;
+    font-family: sans-serif;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 999;
+">
+    Planet: None<br>
+    Distance from Sun: -<br>
+    Day Length: -
+</div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
