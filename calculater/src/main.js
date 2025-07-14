@@ -13,6 +13,9 @@ import uranusTexture from '/img/uranus.jpg';
 import uranusRingTexture from '/img/uranus ring.png';
 import neptuneTexture from '/img/neptune.jpg';
 import GUI from 'lil-gui'
+const warningAudio = new Audio('/sounds/alert.mp3');
+warningAudio.loop = true; 
+
 /*############################################################
 ########## global variables and initilaize Gui folders #######
 ##############################################################
@@ -187,7 +190,7 @@ function computePosition(t, a, e, T) {
     let x = r * Math.cos(theta);
     let y = r * Math.sin(theta);
 
-    return {x, y, r, theta, E, M};
+    return {x, y};
 }
 // update planets position
 function updateCurrentPosition(planet,deltaDays){
@@ -205,7 +208,7 @@ function updateCurrentPosition(planet,deltaDays){
 let lastTime = performance.now() / 1000; 
 
 
-GlobalGui.add(global,"timespeed").name("days speed per second").min(0).max(5).step(0.001);
+GlobalGui.add(global,"timespeed").name("days speed per second").min(0).max(10).step(0.001);
 let currentTargetPlanet = null;
 function showLookingPlanetInfo(){
   if (currentTargetPlanet) {
@@ -231,6 +234,14 @@ function showLookingPlanetInfo(){
 }
 
 
+const earthOrbitCurve = new THREE.EllipseCurve(
+    0, 0, 
+    100, 100, 
+    0, 2 * Math.PI,
+    false, 0
+);
+let warningTime = 10; 
+let warningTimerActive = false;
 
 function animate() {
      const currentTime = performance.now() / 1000; 
@@ -259,6 +270,32 @@ function animate() {
 starField.rotation.y += 0.00004; 
 starField.rotation.x += 0.00004;
 showLookingPlanetInfo();
+
+const cameraDistanceFromSun = camera.position.length(); 
+
+if (cameraDistanceFromSun < 100) {
+    if (!warningTimerActive) {
+        warningTimerActive = true;
+        warningAudio.play();
+    } else {
+        warningTime -= deltaSeconds;
+        document.getElementById("warning").style.display = "block";
+        document.getElementById("warning").innerText = 
+          `⚠️ Warning: Too close to the Sun! Move away in ${warningTime.toFixed(1)} s`;
+    }
+
+    if (warningTime <= 0) {
+        alert("🔥 You stayed too close to the Sun for too long. you died");
+window.close(); 
+        warningAudio.pause();
+    }
+} else {
+    warningTime = 10;
+    warningTimerActive = false;
+            warningAudio.pause();
+    document.getElementById("warning").style.display = "none";
+}
+
     renderer.shadowMap.enabled = true;
 
     // Configure planet materials to receive/cast shadows (add after creating planets)
@@ -282,35 +319,35 @@ window.addEventListener('resize', function() {
  * ############################################
  */
 // earth
-EarthGui.add(earth,"Au").min(0).max(40).step(0.01);
+EarthGui.add(earth,"Au").name('a(Au)').min(0).max(40).step(0.01);
 EarthGui.add(earth,"T").min(1).max(5000).step(1);
 EarthGui.add(earth,"e").min(0).max(1).step(0.001);
 //mercury
-MercuryGui.add(mercury,"Au").min(0).max(40).step(0.01);
+MercuryGui.add(mercury,"Au").name('a(Au)').min(0).max(40).step(0.01);
 MercuryGui.add(mercury,"T").min(1).max(5000).step(1);
 MercuryGui.add(mercury,"e").min(0).max(1).step(0.001);
 //venus
-venusGui.add(venus,"Au").min(0).max(40).step(0.01);
+venusGui.add(venus,"Au").name('a(Au)').min(0).max(40).step(0.01);
 venusGui.add(venus,"T").min(1).max(5000).step(1);
 venusGui.add(venus,"e").min(0).max(1).step(0.001);
 //mars
-marsGui.add(mars,"Au").min(0).max(40).step(0.01);
+marsGui.add(mars,"Au").name('a(Au)').min(0).max(40).step(0.01);
 marsGui.add(mars,"T").min(1).max(5000).step(1);
 marsGui.add(mars,"e").min(0).max(1).step(0.001);
 //jupiter
-jupiterGui.add(jupiter,"Au").min(0).max(40).step(0.01);
+jupiterGui.add(jupiter,"Au").name('a(Au)').min(0).max(40).step(0.01);
 jupiterGui.add(jupiter,"T").min(1).max(5000).step(1);
 jupiterGui.add(jupiter,"e").min(0).max(1).step(0.001);
 //uranus
-uranusGui.add(uranus,"Au").min(0).max(40).step(0.01);
+uranusGui.add(uranus,"Au").name('a(Au)').min(0).max(40).step(0.01);
 uranusGui.add(uranus,"T").min(1).max(5000).step(1);
 uranusGui.add(uranus,"e").min(0).max(1).step(0.001);
 //saturn
-saturnGui.add(saturn,"Au").min(0).max(40).step(0.01);
+saturnGui.add(saturn,"Au").name('a(Au)').min(0).max(40).step(0.01);
 saturnGui.add(saturn,"T").min(1).max(5000).step(1);
 saturnGui.add(saturn,"e").min(0).max(1).step(0.001);
 //saturn
-neptuneGui.add(neptune,"Au").min(0).max(40).step(0.01);
+neptuneGui.add(neptune,"Au").name('a(Au)').min(0).max(40).step(0.01);
 neptuneGui.add(neptune,"T").min(1).max(5000).step(1);
 neptuneGui.add(neptune,"e").min(0).max(1).step(0.001);
 

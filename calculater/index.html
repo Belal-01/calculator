@@ -8,6 +8,10 @@
     <title>calculater</title>
   </head>
   <body>
+
+
+
+
     <canvas id="canvas"
     style="position: fixed; top: 0; left: 0 ; right:0; bottom:0; outline: none;">
 
@@ -41,10 +45,27 @@
     font-size: 14px;
     z-index: 999;
 ">
+
     Planet: None<br>
     Distance from Sun: -<br>
     Day Length: -
 </div>
+<div id="warning" style="
+    position: fixed;
+    top: 20px;
+    right: 620px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    font-family: sans-serif;
+    border-radius: 8px;
+    font-size: 16px;
+    display: none;
+    z-index: 999;
+">
+</div>
+
+
 
     <script type="module" src="/src/main.js"></script>
   </body>
