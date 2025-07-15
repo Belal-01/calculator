@@ -284,7 +284,7 @@ if (rotatingToSun) {
     orbit.target.copy(newLookAt);
     orbit.update();
 
-    if (newLookAt.distanceTo(currentPos.clone().add(direction)) < 0.01) {
+    if (newLookAt.distanceTo(currentPos.clone().add(direction)) < 0.1) {
         rotatingToSun = false;
         orbit.target.set(0, 0, 0);
         orbit.update();
@@ -298,6 +298,9 @@ if (cameraDistanceFromSun < 80* global.size) {
         warningTimerActive = true;
         warningAudio.play();
     } else {
+      if(cameraDistanceFromSun < 50* global.size)
+        warningTime -= 5 * deltaSeconds;
+      else 
         warningTime -= deltaSeconds;
         document.getElementById("warning").style.display = "block";
         document.getElementById("warning").innerText = 
