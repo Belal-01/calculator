@@ -235,6 +235,12 @@ function showLookingPlanetInfo(){
 }
 
 
+GlobalGui.add({stareAtSun}, 'stareAtSun').name('Look to Sun');
+let rotatingToSun = false;
+
+function stareAtSun() {
+    rotatingToSun = true;
+}
 
 let warningTime = 10; 
 let warningTimerActive = false;
@@ -266,6 +272,24 @@ function animate() {
 starField.rotation.y += 0.00004; 
 starField.rotation.x += 0.00004;
 showLookingPlanetInfo();
+
+if (rotatingToSun) {
+    const target = new THREE.Vector3(0, 0, 0);
+    const currentPos = camera.position.clone();
+    const direction = target.clone().sub(currentPos).normalize();
+
+    const currentLookAt = orbit.target.clone();
+    const newLookAt = currentLookAt.lerp(currentPos.clone().add(direction), 0.05);
+
+    orbit.target.copy(newLookAt);
+    orbit.update();
+
+    if (newLookAt.distanceTo(currentPos.clone().add(direction)) < 0.01) {
+        rotatingToSun = false;
+        orbit.target.set(0, 0, 0);
+        orbit.update();
+    }
+}
 
 const cameraDistanceFromSun = camera.position.length(); 
 
@@ -357,6 +381,8 @@ neptuneGui.add(neptune,"e").min(0).max(1).step(0.001);
  * ############################################
  */
 
+
+
 SunGui.add({lookAtSun}, 'lookAtSun').name('Camera to Sun');
 function lookAtSun() {
     orbit.target.set(0, 0, 0);
@@ -435,9 +461,9 @@ function lookAtJupiter() {
   jupiter.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
-    tempVec.x,
-    tempVec.y + 100,
-    tempVec.z + 140
+    tempVec.x +100,
+    tempVec.y + 200,
+    tempVec.z + 300
   );
   camera.lookAt(tempVec);
   orbit.update();
