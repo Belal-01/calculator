@@ -41,8 +41,8 @@ uranusGui.close();
 saturnGui.close();
 neptuneGui.close();
 const global = {
-    distance: 2,
-    size : 1,
+    distance: 4,
+    size : 2.5,
     days: 0,
     timespeed : 1 // days increase per second 
 };
@@ -63,10 +63,10 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,20000);
 const orbit = new OrbitControls(camera, renderer.domElement);
 /// camera 
-camera.position.set(-90, 140, 140);
+camera.position.set(-90, 140, 340);
 orbit.update();
 // ambient light
-const ambientLight = new THREE.AmbientLight(0x333333,3);
+const ambientLight = new THREE.AmbientLight(0x333333,4);
 scene.add(ambientLight);
 /*
 #######################################################
@@ -83,16 +83,16 @@ scene.background = cubeTextureLoader.load([
 ################### Sun #####################
 ##############################################
 */
-const sunGeo = new THREE.SphereGeometry(20, 30, 30);
+const sunGeo = new THREE.SphereGeometry(20 * global.size, 35, 35);
 const sunMat = new THREE.MeshBasicMaterial({
     map: textureLoader.load(sunTexture)
 });
 const sun = new THREE.Mesh(sunGeo, sunMat);
 scene.add(sun);
-const pointLight = new THREE.PointLight(0xffd700, 7000, 300000);
+const pointLight = new THREE.PointLight(0xffd700, 1000000, 3000000);
 scene.add(pointLight);
 
-SunGui.add(pointLight,'intensity').min(0).max(100000);
+SunGui.add(pointLight,'intensity').min(0).max(9000000);
 const pointLightHelper = new THREE.PointLightHelper(pointLight,0.2);
 scene.add(pointLightHelper);
 
@@ -103,7 +103,7 @@ scene.add(pointLightHelper);
 */
 
 function createPlanete(size, texture, position,Au,e,T,rotationPeriod,ring ) {
-    const geo = new THREE.SphereGeometry(size, 30, 30);
+    const geo = new THREE.SphereGeometry(size * global.size, 35, 35);
     const mat = new THREE.MeshStandardMaterial({
         map: textureLoader.load(texture)
     });
@@ -117,8 +117,8 @@ function createPlanete(size, texture, position,Au,e,T,rotationPeriod,ring ) {
     let ringMesh = null;
     if (ring) {
         const ringGeo = new THREE.RingGeometry(
-            ring.innerRadius,
-            ring.outerRadius,
+            ring.innerRadius * global.size ,
+            ring.outerRadius * global.size ,
             32);
         const ringMat = new THREE.MeshBasicMaterial({
             map: textureLoader.load(ring.texture),
@@ -195,9 +195,9 @@ function computePosition(t, a, e, T) {
 // update planets position
 function updateCurrentPosition(planet,deltaDays){
   let newPlanetPosition=computePosition(global.days,planet.Au,planet.e,planet.T);
-    planet.mesh.position.set(newPlanetPosition.x*100* global.distance,planet.mesh.position.y,newPlanetPosition.y*100* global.distance);
+    planet.mesh.position.set(newPlanetPosition.x*100* global.distance * global.size,planet.mesh.position.y,newPlanetPosition.y*100* global.distance * global.size);
     if (planet.ringMesh) {
-        planet.ringMesh.position.set(newPlanetPosition.x*100* global.distance, planet.ringMesh.position.y, newPlanetPosition.y*100* global.distance);
+        planet.ringMesh.position.set(newPlanetPosition.x*100* global.distance * global.size, planet.ringMesh.position.y, newPlanetPosition.y*100* global.distance * global.size);
     }
    
     planet.mesh.rotation.y += (deltaDays * 2 * Math.PI) / planet.rotationPeriod;
@@ -210,6 +210,7 @@ let lastTime = performance.now() / 1000;
 
 GlobalGui.add(global,"timespeed").name("days speed per second").min(0).max(10).step(0.001);
 let currentTargetPlanet = null;
+
 function showLookingPlanetInfo(){
   if (currentTargetPlanet) {
 
@@ -234,12 +235,7 @@ function showLookingPlanetInfo(){
 }
 
 
-const earthOrbitCurve = new THREE.EllipseCurve(
-    0, 0, 
-    100, 100, 
-    0, 2 * Math.PI,
-    false, 0
-);
+
 let warningTime = 10; 
 let warningTimerActive = false;
 
@@ -273,7 +269,7 @@ showLookingPlanetInfo();
 
 const cameraDistanceFromSun = camera.position.length(); 
 
-if (cameraDistanceFromSun < 100) {
+if (cameraDistanceFromSun < 80* global.size) {
     if (!warningTimerActive) {
         warningTimerActive = true;
         warningAudio.play();
@@ -295,6 +291,10 @@ window.close();
             warningAudio.pause();
     document.getElementById("warning").style.display = "none";
 }
+const distanceToSun = camera.position.distanceTo(sun.position);
+document.getElementById("sundist").innerHTML = `
+       Current distnce from sun  : ${distanceToSun}
+    `;
 
     renderer.shadowMap.enabled = true;
 
