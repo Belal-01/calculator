@@ -279,6 +279,9 @@ if (rotatingToSun) {
     const direction = target.clone().sub(currentPos).normalize();
 
     const currentLookAt = orbit.target.clone();
+    console.log(target);
+    console.log(currentLookAt);
+    if(!(currentLookAt.x >= -10 * global.size && currentLookAt.x <=10* global.size  &&currentLookAt.y >= -10* global.size  && currentLookAt.y <=10* global.size   && currentLookAt.z >= -10 * global.size && currentLookAt.z <=10* global.size )){
     const newLookAt = currentLookAt.lerp(currentPos.clone().add(direction), 0.05);
 
     orbit.target.copy(newLookAt);
@@ -288,7 +291,12 @@ if (rotatingToSun) {
         rotatingToSun = false;
         orbit.target.set(0, 0, 0);
         orbit.update();
+    } 
     }
+    else{
+        rotatingToSun = false;
+    }
+    
 }
 
 const cameraDistanceFromSun = camera.position.length(); 
@@ -309,7 +317,7 @@ if (cameraDistanceFromSun < 80* global.size) {
 
     if (warningTime <= 0) {
         alert("🔥 You stayed too close to the Sun for too long. you died");
-window.close(); 
+        window.close(); 
         warningAudio.pause();
     }
 } else {
@@ -346,35 +354,35 @@ window.addEventListener('resize', function() {
  * ############################################
  */
 // earth
-EarthGui.add(earth,"Au").name('a(Au)').min(0).max(40).step(0.01);
+EarthGui.add(earth,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 EarthGui.add(earth,"T").min(1).max(5000).step(1);
 EarthGui.add(earth,"e").min(0).max(1).step(0.001);
 //mercury
-MercuryGui.add(mercury,"Au").name('a(Au)').min(0).max(40).step(0.01);
+MercuryGui.add(mercury,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 MercuryGui.add(mercury,"T").min(1).max(5000).step(1);
 MercuryGui.add(mercury,"e").min(0).max(1).step(0.001);
 //venus
-venusGui.add(venus,"Au").name('a(Au)').min(0).max(40).step(0.01);
+venusGui.add(venus,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 venusGui.add(venus,"T").min(1).max(5000).step(1);
 venusGui.add(venus,"e").min(0).max(1).step(0.001);
 //mars
-marsGui.add(mars,"Au").name('a(Au)').min(0).max(40).step(0.01);
+marsGui.add(mars,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 marsGui.add(mars,"T").min(1).max(5000).step(1);
 marsGui.add(mars,"e").min(0).max(1).step(0.001);
 //jupiter
-jupiterGui.add(jupiter,"Au").name('a(Au)').min(0).max(40).step(0.01);
+jupiterGui.add(jupiter,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 jupiterGui.add(jupiter,"T").min(1).max(5000).step(1);
 jupiterGui.add(jupiter,"e").min(0).max(1).step(0.001);
 //uranus
-uranusGui.add(uranus,"Au").name('a(Au)').min(0).max(40).step(0.01);
+uranusGui.add(uranus,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 uranusGui.add(uranus,"T").min(1).max(5000).step(1);
 uranusGui.add(uranus,"e").min(0).max(1).step(0.001);
 //saturn
-saturnGui.add(saturn,"Au").name('a(Au)').min(0).max(40).step(0.01);
+saturnGui.add(saturn,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 saturnGui.add(saturn,"T").min(1).max(5000).step(1);
 saturnGui.add(saturn,"e").min(0).max(1).step(0.001);
 //saturn
-neptuneGui.add(neptune,"Au").name('a(Au)').min(0).max(40).step(0.01);
+neptuneGui.add(neptune,"Au").name('a(Au)').min(0).max(20).step(0.0001);
 neptuneGui.add(neptune,"T").min(1).max(5000).step(1);
 neptuneGui.add(neptune,"e").min(0).max(1).step(0.001);
 
@@ -388,8 +396,9 @@ neptuneGui.add(neptune,"e").min(0).max(1).step(0.001);
 
 SunGui.add({lookAtSun}, 'lookAtSun').name('Camera to Sun');
 function lookAtSun() {
+  rotatingToSun= false;
     orbit.target.set(0, 0, 0);
-    camera.position.set(-90, 140, 140);
+    camera.position.set(-200, 160, 140);
     camera.lookAt(orbit.target);
     orbit.update();
 }
@@ -397,13 +406,13 @@ function lookAtSun() {
 const tempVec = new THREE.Vector3();
 
 function lookAtEarth() {
-  
+  rotatingToSun= false;
   earth.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
     tempVec.x,
-    tempVec.y + 100,
-    tempVec.z + 140
+    tempVec.y + 150,
+    tempVec.z + 200
   );
   camera.lookAt(tempVec);
  
@@ -413,7 +422,7 @@ function lookAtEarth() {
 EarthGui.add({ lookAtEarth }, 'lookAtEarth').name('Camera to Earth');
 //
 function lookAtMercury() {
-  
+  rotatingToSun= false;
   mercury.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
@@ -429,12 +438,13 @@ function lookAtMercury() {
 MercuryGui.add({ lookAtMercury }, 'lookAtMercury').name('Camera to Mercury');
 // VENUS
 function lookAtVenus() {
+  rotatingToSun= false;
   venus.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
     tempVec.x,
-    tempVec.y + 100,
-    tempVec.z + 140
+    tempVec.y + 200,
+    tempVec.z + 200
   );
   camera.lookAt(tempVec);
   orbit.update();
@@ -445,6 +455,7 @@ venusGui.add({ lookAtVenus }, 'lookAtVenus').name('Camera to Venus');
 
 // MARS
 function lookAtMars() {
+  rotatingToSun= false;
   mars.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
@@ -461,6 +472,7 @@ marsGui.add({ lookAtMars }, 'lookAtMars').name('Camera to Mars');
 
 // JUPITER
 function lookAtJupiter() {
+  rotatingToSun= false;
   jupiter.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
@@ -477,12 +489,13 @@ jupiterGui.add({ lookAtJupiter }, 'lookAtJupiter').name('Camera to Jupiter');
 
 // SATURN
 function lookAtSaturn() {
+  rotatingToSun= false;
   saturn.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
     tempVec.x,
-    tempVec.y + 100,
-    tempVec.z + 140
+    tempVec.y + 200,
+    tempVec.z + 200
   );
   camera.lookAt(tempVec);
   orbit.update();
@@ -493,6 +506,7 @@ saturnGui.add({ lookAtSaturn }, 'lookAtSaturn').name('Camera to Saturn');
 
 // URANUS
 function lookAtUranus() {
+  rotatingToSun= false;
   uranus.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
@@ -509,6 +523,7 @@ uranusGui.add({ lookAtUranus }, 'lookAtUranus').name('Camera to Uranus');
 
 // NEPTUNE
 function lookAtNeptune() {
+  rotatingToSun= false;
   neptune.mesh.getWorldPosition(tempVec);
   orbit.target.copy(tempVec);
   camera.position.set(
@@ -558,7 +573,7 @@ GlobalGui.add({
 const starsTex = textureLoader.load(starsTexture);
 starsTex.wrapS = THREE.RepeatWrapping;
 starsTex.wrapT = THREE.RepeatWrapping;
-starsTex.repeat.set(5, 5); 
+starsTex.repeat.set(4, 4); 
 
 const starsGeo = new THREE.SphereGeometry(10000, 64, 64);
 const starsMat = new THREE.MeshBasicMaterial({
