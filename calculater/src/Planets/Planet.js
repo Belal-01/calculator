@@ -11,8 +11,11 @@ export class Planet {
         this.T = T;
         this.rotationPeriod = rotationPeriod;
     }
+   
     updateCurrentPosition(deltaDays) {
+
         let newPlanetPosition = Planet.phisycsCalcuator.computePosition(global.days, this.Au, this.e, this.T);
+        
         this.mesh.position.set(newPlanetPosition.x * 100 * global.distance * global.size, this.mesh.position.y, newPlanetPosition.y * 100 * global.distance * global.size);
         if (this.ringMesh) {
             this.ringMesh.position.set(newPlanetPosition.x * 100 * global.distance * global.size, this.ringMesh.position.y, newPlanetPosition.y * 100 * global.distance * global.size);

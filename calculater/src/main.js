@@ -16,7 +16,6 @@ const sunObj = new Sun();
 sunObj.CreateSun();
 // planets
 const planet = new PlanetsConfigure();
-planet.createPlanets();
 // look at 
 const lookAT = new LookAt();
 
