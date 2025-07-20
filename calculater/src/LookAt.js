@@ -27,7 +27,7 @@ export class LookAt {
     orbit.update();
   }
 
-  lookAtPlanet(planet, offsetX = 0, offsetY = 150, offsetZ = 200) {
+  #lookAtPlanet(planet, offsetX = 0, offsetY = 150, offsetZ = 200) {
    //  todo
    //  rotatingToSun= false;
       this.tempVec=new THREE.Vector3();
@@ -45,38 +45,38 @@ export class LookAt {
   }
 
   lookAtEarth() {
-    this.lookAtPlanet(earth, 0, 150, 200);
+    this.#lookAtPlanet(earth, 0, 150, 200);
   }
 
 
   lookAtMercury() {
-    this.lookAtPlanet(mercury, 0, 100, 140);
+    this.#lookAtPlanet(mercury, 0, 100, 140);
   }
 
 
   lookAtVenus() {
-    this.lookAtPlanet(venus, 0, 200, 200);
+    this.#lookAtPlanet(venus, 0, 200, 200);
   }
 
 
   lookAtMars() {
-    this.lookAtPlanet(mars, 0, 100, 140);
+    this.#lookAtPlanet(mars, 0, 100, 140);
   }
 
   lookAtJupiter() {
-    this.lookAtPlanet(jupiter, 100, 200, 300);
+    this.#lookAtPlanet(jupiter, 100, 200, 300);
   }
 
   lookAtSaturn() {
-    this.lookAtPlanet(saturn, 0, 200, 200);
+    this.#lookAtPlanet(saturn, 0, 200, 200);
   }
 
   lookAtUranus() {
-    this.lookAtPlanet(uranus, 0, 100, 140);
+    this.#lookAtPlanet(uranus, 0, 100, 140);
   }
 
   lookAtNeptune() {
-    this.lookAtPlanet(neptune, 0, 100, 140);
+    this.#lookAtPlanet(neptune, 0, 100, 140);
   }
   showLookingPlanetInfo(){
   if (this.currentTargetPlanet ) {

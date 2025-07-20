@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { LilGui } from './Gui.js';
 import { Configurations } from './configurations.js';
 import { Sun } from './Planets/Sun.js';
-import { PlanetsConfigure } from './Planets/PlanetsConfigure.js';
+import { SolarSystemPlanets } from './Planets/SolarSystemPlanets.js';
 import { LookAt } from './LookAt.js'
 //configurations
 const config = new Configurations();
@@ -15,17 +15,9 @@ GUI.addGlobalButtons();
 const sunObj = new Sun();
 sunObj.CreateSun();
 // planets
-const planet = new PlanetsConfigure();
+const solarSyatem = new SolarSystemPlanets();
 // look at 
 const lookAT = new LookAt();
-
-
-
-
-
-
-
-
 
 function animate() {
   // update time 

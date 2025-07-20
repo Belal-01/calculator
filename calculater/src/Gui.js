@@ -1,22 +1,23 @@
 
 import GUI from 'lil-gui'
 export class LilGui {
+    #gui;
     constructor() {
         this.pretimespeed = 1;
-        this.laystatus = true;
+       
         this.playstatus = true;
         this.lastTime = performance.now() / 1000;
-        this.gui = new GUI();
-        this.GlobalGui = this.gui.addFolder('Global');
-        this.SunGui = this.gui.addFolder('Sun');
-        this.MercuryGui = this.gui.addFolder('Mercury');
-        this.venusGui = this.gui.addFolder('venus');
-        this.EarthGui = this.gui.addFolder('Earth');
-        this.marsGui = this.gui.addFolder('mars');
-        this.jupiterGui = this.gui.addFolder('jupiter');
-        this.saturnGui = this.gui.addFolder('saturn');
-        this.uranusGui = this.gui.addFolder('uranus');
-        this.neptuneGui = this.gui.addFolder('neptune');
+        this.#gui = new GUI();
+        this.GlobalGui = this.#gui.addFolder('Global');
+        this.SunGui = this.#gui.addFolder('Sun');
+        this.MercuryGui = this.#gui.addFolder('Mercury');
+        this.venusGui = this.#gui.addFolder('venus');
+        this.EarthGui = this.#gui.addFolder('Earth');
+        this.marsGui = this.#gui.addFolder('mars');
+        this.jupiterGui = this.#gui.addFolder('jupiter');
+        this.saturnGui = this.#gui.addFolder('saturn');
+        this.uranusGui = this.#gui.addFolder('uranus');
+        this.neptuneGui = this.#gui.addFolder('neptune');
 
         this.EarthGui.close();
         this.SunGui.close();
@@ -41,7 +42,7 @@ export class LilGui {
         this.GlobalGui.add(this.global, "distance").min(1).max(10).step(0.5);
         this.GlobalGui.add(this.global, "days");
         this.GlobalGui.add(this.global, "timespeed").name("days speed per second").min(0).max(10).step(0.001);
-        window.gui = this.gui;
+      
         window.GlobalGui = this.GlobalGui;
         window.SunGui = this.SunGui;
         window.MercuryGui = this.MercuryGui;

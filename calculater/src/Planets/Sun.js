@@ -49,7 +49,7 @@ export class Sun {
 
         SunGui.add(pointLight, 'intensity').min(0).max(9000000);
         window.sun = this.sun;
-
+        return this.sun;
 
     }
     handleCloseToSun(deltaSeconds) {
