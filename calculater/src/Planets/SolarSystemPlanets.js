@@ -59,10 +59,13 @@ export class SolarSystemPlanets {
         const geo = new THREE.SphereGeometry(size * global.size, 35, 35);
         const mat = new THREE.MeshStandardMaterial({map: textureLoader.load(texture)});
         const mesh = new THREE.Mesh(geo, mat);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
         const obj = new THREE.Object3D();
         mesh.userData = {
             basePosition: position / global.distance
         };
+
         obj.add(mesh);
 
         let ringMesh = null;
@@ -89,6 +92,7 @@ export class SolarSystemPlanets {
 
         scene.add(obj);
         mesh.position.x = position;
+
         return new Planet(name, mesh, obj, ringMesh, Au, e, T, rotationPeriod);
 
 

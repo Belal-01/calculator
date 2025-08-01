@@ -43,8 +43,15 @@ export class Sun {
             map: textureLoader.load(sunTexture)
         });
         this.sun = new THREE.Mesh(sunGeo, sunMat);
+        this.sun.castShadow = false;
+        this.sun.receiveShadow = false;
         scene.add(this.sun);
         const pointLight = new THREE.PointLight(0xffd700, 1000000, 3000000);
+        pointLight.castShadow = true;
+        pointLight.shadow.mapSize.width  = 2048;
+        pointLight.shadow.mapSize.height = 2048;
+        pointLight.shadow.camera.near    = 0.5;
+        pointLight.shadow.camera.far     = 3000;
         scene.add(pointLight);
 
         SunGui.add(pointLight, 'intensity').min(0).max(9000000);
