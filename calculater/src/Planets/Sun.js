@@ -34,8 +34,9 @@ export class Sun {
             else {
                 this.rotatingToSun = false;
             }
-
+        return true;
         }
+        else return  false;
     }
     CreateSun() {
         const sunGeo = new THREE.SphereGeometry(20 * global.size, 35, 35);

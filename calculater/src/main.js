@@ -27,7 +27,7 @@ function animate() {
   const deltaDays = deltaSeconds * global.timespeed;
   // show and increase  days on screen 
   document.getElementById("timeDisplay").innerText = `Days: ${global.days.toFixed(2)}`;
-  global.days += deltaDays * global.timespeed; // increasing of days per second 
+  global.days += deltaDays * global.timespeed; // increasing of days per second
   /// palnets and sun movemnet 
   sun.rotateY(0.004 * global.timespeed);
   mercury.updateCurrentPosition(deltaDays);
@@ -38,7 +38,8 @@ function animate() {
   saturn.updateCurrentPosition(deltaDays);
   uranus.updateCurrentPosition(deltaDays);
   neptune.updateCurrentPosition(deltaDays);
-
+///
+  lookAT.updateFollow();
   // move the background 
   config.updateStarFiledMovement();
   // update look at variables 
@@ -48,8 +49,10 @@ function animate() {
   // show distance to sun 
   sunObj.updateDistanceToSun();
   // rotate to sun 
-  sunObj.handleRotationToSun();
-
+  let rot=sunObj.handleRotationToSun();
+  if(rot){
+    lookAT.currentTargetPlanet=null;
+  }
   // shadows
   renderer.shadowMap.enabled = true;
   mercury.mesh.castShadow = true;

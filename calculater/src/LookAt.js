@@ -13,34 +13,30 @@ export class LookAt {
     saturnGui.add({ lookAtSaturn: () => this.lookAtSaturn() }, 'lookAtSaturn').name('Camera to Saturn');
     uranusGui.add({ lookAtUranus: () => this.lookAtUranus() }, 'lookAtUranus').name('Camera to Uranus');
     neptuneGui.add({ lookAtNeptune: () => this.lookAtNeptune() }, 'lookAtNeptune').name('Camera to Neptune');
+    GlobalGui.add({CancelLooking: () => this.CancelLooking() },'CancelLooking' ).name('Cancel Looking');
     this.currentTargetPlanet = null;
-
+    this._followOffset = new THREE.Vector3();
   }
 
   lookAtSun() {
     //todo
+    this.currentTargetPlanet = null;
     //rotatingToSun = false;
     orbit.target.set(0, 0, 0);
     camera.position.set(-200, 160, 140);
     camera.lookAt(orbit.target);
-    this.currentTargetPlanet = null;
+
     orbit.update();
   }
 
   #lookAtPlanet(planet, offsetX = 0, offsetY = 150, offsetZ = 200) {
-   //  todo
-   //  rotatingToSun= false;
-      this.tempVec=new THREE.Vector3();
-     planet.mesh.getWorldPosition(this.tempVec);
-    orbit.target.copy(this.tempVec);
-     camera.position.set(
-      this.tempVec.x + offsetX,
-      this.tempVec.y + offsetY,
-      this.tempVec.z + offsetZ
-    );
-    camera.lookAt(this.tempVec);
-    orbit.update();
+
     this.currentTargetPlanet = planet;
+    // store offset for continuous follow
+    this._followOffset.set(offsetX, offsetY, offsetZ);
+
+    // immediately jump camera into place too:
+    this._applyFollow();
   
   }
 
@@ -79,7 +75,7 @@ export class LookAt {
     this.#lookAtPlanet(neptune, 0, 100, 140);
   }
   showLookingPlanetInfo(){
-  if (this.currentTargetPlanet ) {
+  if (this.currentTargetPlanet !=null) {
 
     let dx = this.currentTargetPlanet.mesh.position.x;
     let dz = this.currentTargetPlanet.mesh.position.z;
@@ -100,4 +96,37 @@ export class LookAt {
 }
 
 }
+  _applyFollow() {
+    const planet = this.currentTargetPlanet;
+    if (!planet) return;
+
+    // get up-to-date world position
+    const worldPos = new THREE.Vector3();
+    planet.mesh.getWorldPosition(worldPos);
+
+    // set the controls’ target to the planet
+    orbit.target.copy(worldPos);
+
+    // position camera at planet + offset
+    camera.position.set(
+        worldPos.x + this._followOffset.x,
+        worldPos.y + this._followOffset.y,
+        worldPos.z + this._followOffset.z
+    );
+
+    // re-compute the orbit-controls matrices
+    orbit.update();
+  }
+
+  // call this every frame in your render loop:
+  updateFollow() {
+    if (this.currentTargetPlanet) {
+      this._applyFollow();
+    }
+    // and always refresh the HUD info:
+    this.showLookingPlanetInfo();
+  }
+  CancelLooking(){
+    this.currentTargetPlanet=null;
+  }
 }
