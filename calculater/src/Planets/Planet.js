@@ -1,7 +1,7 @@
 import { phiyscs } from '../phisycs.js';
 export class Planet {
     static phisycsCalcuator = new phiyscs();
-    constructor(name, mesh, obj, ringMesh, Au, e, T, rotationPeriod) {
+    constructor(name, mesh, obj, ringMesh, Au, e, T, rotationPeriod,mass) {
         this.name = name;
         this.mesh = mesh;
         this.obj = obj;
@@ -9,10 +9,14 @@ export class Planet {
         this.Au = Au;
         this.e = e;
         this.T = T;
+        this.mass = mass;
         this.rotationPeriod = rotationPeriod;
+        this.T = Planet.phisycsCalcuator.computeOrbitalPeriod(this.Au, this.mass);
     }
    
     updateCurrentPosition(deltaDays) {
+        //console.log(this.name + " "+this.T);
+        this.T = Planet.phisycsCalcuator.computeOrbitalPeriod(this.Au, this.mass);
 
         let newPlanetPosition = Planet.phisycsCalcuator.computePosition(global.days, this.Au, this.e, this.T);
         

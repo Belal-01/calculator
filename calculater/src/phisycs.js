@@ -1,6 +1,12 @@
 
 export class phiyscs {
 
+    computeOrbitalPeriod(a, planetMass = 0) {
+        // T^2 = a^3 / (M_sun + M_planet)
+        let T = Math.sqrt(Math.pow(a, 3) / (sun.mass + planetMass));
+        console.log(T);
+        return T *365;
+    }
 // solve kepler function 
  solveKepler(M, e, epsilon = 1e-6) {
     let E = M; 

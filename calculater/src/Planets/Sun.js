@@ -7,6 +7,7 @@ export class Sun {
         this.warningAudio = new Audio('/sounds/alert.mp3');
         this.warningAudio.loop = true;
         this.rotatingToSun = false;
+
         GlobalGui.add( this , 'stareAtSun').name('Look to Sun');
     }
     stareAtSun() {
@@ -19,8 +20,7 @@ export class Sun {
             const direction = target.clone().sub(currentPos).normalize();
 
             const currentLookAt = orbit.target.clone();
-            console.log(target);
-            console.log(currentLookAt);
+
             if (!(currentLookAt.x >= -10 * global.size && currentLookAt.x <= 10 * global.size && currentLookAt.y >= -10 * global.size && currentLookAt.y <= 10 * global.size && currentLookAt.z >= -10 * global.size && currentLookAt.z <= 10 * global.size)) {
                 const newLookAt = currentLookAt.lerp(currentPos.clone().add(direction), 0.05);
                 orbit.target.copy(newLookAt);
@@ -46,6 +46,7 @@ export class Sun {
         this.sun = new THREE.Mesh(sunGeo, sunMat);
         this.sun.castShadow = false;
         this.sun.receiveShadow = false;
+        this.sun.mass=1;
         scene.add(this.sun);
         const pointLight = new THREE.PointLight(0xffd700, 1000000, 3000000);
         pointLight.castShadow = true;
@@ -56,6 +57,11 @@ export class Sun {
         scene.add(pointLight);
 
         SunGui.add(pointLight, 'intensity').min(0).max(9000000);
+        SunGui.add(this.sun, "mass")
+            .min(0)
+            .max(500)
+            .step(0.1)
+            .name("Sun Mass");
         window.sun = this.sun;
         return this.sun;
 

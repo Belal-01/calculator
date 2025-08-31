@@ -42,7 +42,9 @@ export class LilGui {
         this.GlobalGui.add(this.global, "distance").min(1).max(10).step(0.5);
         this.GlobalGui.add(this.global, "days");
         this.GlobalGui.add(this.global, "timespeed").name("days speed per second").min(0).max(10).step(0.001);
-      
+
+
+
         window.GlobalGui = this.GlobalGui;
         window.SunGui = this.SunGui;
         window.MercuryGui = this.MercuryGui;
