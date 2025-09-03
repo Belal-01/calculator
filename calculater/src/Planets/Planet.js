@@ -17,9 +17,12 @@ export class Planet {
    
     updateCurrentPosition(deltaDays) {
         //console.log(this.name + " "+this.T);
+        if(mode=="mass"){
         let [newT, newA] = Planet.phisycsCalcuator.computeOrbitalPeriod(this.Au0, this.mass);
         this.T = newT;
         this.Au = newA;
+        }
+   
         let newPlanetPosition = Planet.phisycsCalcuator.computePosition(global.days, this.Au, this.e, this.T);
 
         this.mesh.position.set(newPlanetPosition.x * 100 * global.distance * global.size, this.mesh.position.y, newPlanetPosition.y * 100 * global.distance * global.size);

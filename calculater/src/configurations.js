@@ -45,6 +45,7 @@ export class Configurations {
     window.scene = this.scene;
     window.camera = this.camera;
     window.orbit = this.orbit;
+    window.mode="mass"; // "not mass"
 
   }
   updateStarFiledMovement() {

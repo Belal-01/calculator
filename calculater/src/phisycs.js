@@ -1,7 +1,9 @@
 
 export class phiyscs {
 
-    computeOrbitalPeriod(a0, planetMass = 0) {
+
+    
+    computeOrbitalPeriod(a0, planetMass = 0.00000001) {
         let a = a0 / Math.cbrt(sun.mass);
         let T = Math.sqrt(Math.pow(a, 3) / (sun.mass + planetMass));
         return [T * 365, a];

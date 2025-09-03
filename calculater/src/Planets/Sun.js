@@ -62,6 +62,7 @@ export class Sun {
             .max(500)
             .step(0.1)
             .name("Sun Mass");
+            
         window.sun = this.sun;
         return this.sun;
 
