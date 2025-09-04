@@ -98,9 +98,11 @@ export class SolarSystemPlanets {
 
     }
     #addPalnetPhiysicsVariable(PlanetGui, planet) {
+        PlanetGui.add(planet, "v").name("speed").listen();
+        PlanetGui.add(planet, "ac").name("ac").listen();
         if(mode=="mass"){
-   PlanetGui.add(planet, "T").name("Period (days)").listen();
-PlanetGui.add(planet, "Au").name("a (AU)").listen();
+    PlanetGui.add(planet, "T").name("Period (days)").listen();
+    PlanetGui.add(planet, "Au").name("a (AU)").listen();
         }
      else{
         PlanetGui.add(planet, "Au").name('a(Au)').min(0).max(20).step(0.0001);

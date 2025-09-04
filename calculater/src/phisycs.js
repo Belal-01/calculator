@@ -6,6 +6,7 @@ export class phiyscs {
     computeOrbitalPeriod(a0, planetMass = 0.00000001) {
         let a = a0 / Math.cbrt(sun.mass);
         let T = Math.sqrt(Math.pow(a, 3) / (sun.mass + planetMass));
+
         return [T * 365, a];
     }
 // solve kepler function 
@@ -36,8 +37,9 @@ export class phiyscs {
 
     let x = r * Math.cos(theta);
     let y = r * Math.sin(theta);
-
-    return {x, y};
+     let v=Math.sqrt(2/r - 1/a) * sun.mass;
+     let ac=v*v/r;
+    return {x, y,v,ac};
 }
 
 
